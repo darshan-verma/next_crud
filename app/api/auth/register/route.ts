@@ -2,11 +2,13 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import User, { IUser } from "@/models/User";
 import bcrypt from "bcrypt";
+import { connectDB } from "@/lib/db";
 
 const SECRET_KEY = process.env.AUTH_SECRET || 'default_secret_key';
 
 
 export async function POST(req: Request){
+    await connectDB();
     const {username, password} = await req.json();
     const user: IUser | null = await User.findOne({name:username});
 
